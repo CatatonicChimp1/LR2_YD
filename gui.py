@@ -366,21 +366,6 @@ def simple_input_dialog(prompt):
     dialog.wait_window(dialog)  # Ожидаем закрытия окна
     return result
 
-
-
-    def get_input():
-        value = entry.get().strip()
-        if value:
-            close_dialog()
-            return value
-        return None
-
-    button = tk.Button(dialog, text="OK", command=get_input)
-    button.pack(pady=10)
-
-    dialog.wait_window(dialog)
-    return get_input()
-
 # Создание backup-файла БД
 def create_backup():
     if not selected_file:
@@ -438,37 +423,6 @@ def import_from_excel():
         messagebox.showinfo("Успех", "Данные успешно импортированы из Excel!")
     except Exception as e:
         messagebox.showerror("Ошибка", f"Не удалось импортировать данные: {e}")
-
-
-
-def import_from_excel():
-    # Выбор Excel-файла
-    file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
-    if not file_path:
-        messagebox.showwarning("Предупреждение", "Файл не был выбран!")
-        return
-
-    # Указание файла для сохранения
-    selected_file = filedialog.asksaveasfilename(defaultextension=".db", filetypes=[("Database files", "*.json")])
-    if not selected_file:
-        messagebox.showwarning("Предупреждение", "Файл для сохранения не был выбран!")
-        return
-
-    try:
-        # Чтение данных из Excel
-        df = pd.read_excel(file_path)
-
-        # Преобразование данных в формат для записи
-        fields = [{"name": col, "type": "str"} for col in df.columns]
-        data = df.to_dict(orient="records")
-
-        # Сохранение данных
-        write_db(selected_file, fields, data)
-        messagebox.showinfo("Успех", "Данные успешно импортированы из Excel!")
-    except Exception as e:
-        messagebox.showerror("Ошибка", f"Не удалось импортировать данные: {e}")
-
-
 
 def create_db():
     def define_fields():
